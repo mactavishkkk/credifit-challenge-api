@@ -1,0 +1,36 @@
+
+services:
+  # credift-api:
+  #   container_name: credift-api
+  #   build: .
+  #   ports:
+  #     - '3001:3000'
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_PORT=3312
+  #     - DB_USER=root
+  #     - DB_PASSWORD=root
+  #     - DB_NAME=credifit
+  #   depends_on:
+  #     - credift-db
+  #   networks:
+  #     - mynetwork
+
+  credift-db:
+    container_name: credift-db
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: credifit
+    ports:
+      - '3312:3306'
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  dbdata:
