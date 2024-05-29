@@ -1,5 +1,5 @@
-// src/models/worker.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+// src/entites/worker.entity.ts
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Company } from './company.entity';
 
 @Entity()
@@ -23,5 +23,6 @@ export class Worker {
   salary: number;
 
   @ManyToOne(() => Company, company => company.workers)
+  @JoinColumn({ name: 'company_id' })
   company: Company;
 }

@@ -1,4 +1,4 @@
-// src/models/company.entity.ts
+// src/entites/company.entity.ts
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Worker } from './worker.entity';
 
@@ -10,14 +10,14 @@ export class Company {
   @Column({ unique: true })
   cnpj: string;
 
-  @Column()
+  @Column({name: 'company_name'})
   companyName: string;
 
   @Column({ unique: true })
   email: string;
 
   @Column()
-  passwords: string;
+  password: string;
 
   @OneToMany(() => Worker, worker => worker.company)
   workers: Worker[];
