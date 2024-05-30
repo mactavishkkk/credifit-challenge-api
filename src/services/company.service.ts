@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from '../entities/company.entity';
-import { CompanyDTO } from 'src/entities/dto/company.dto';
+import { CreateCompanyDTO } from 'src/entities/dto/company.dto';
+import { UpdateCompanyDTO } from 'src/entities/dto/update-company.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CompanyService {
@@ -19,13 +21,26 @@ export class CompanyService {
         return this.companyRepository.findOne({ where: { id } });
     }
 
-    create(createCompanyDto: CompanyDTO): Promise<Company> {
-        const company = this.companyRepository.create(createCompanyDto);
+    async create(createCompanyDto: CreateCompanyDTO): Promise<Company> {
+        const company = this.companyRepository.create({
+            ...createCompanyDto,
+            password: await bcrypt.hash(createCompanyDto.password, 10)
+        });
         return this.companyRepository.save(company);
     }
 
-    update(id: number, updateCompanyDto: CompanyDTO): Promise<Company> {
-        return this.companyRepository.save({ ...updateCompanyDto, id });
+    async update(id: number, updateCompanyDto: UpdateCompanyDTO): Promise<Company> {
+        const company = await this.companyRepository.findOneBy({ id });
+        if (!company) {
+            throw new NotFoundException(`Company with ID ${id} not found`);
+        }
+
+        if (updateCompanyDto.password) {
+            updateCompanyDto.password = await bcrypt.hash(updateCompanyDto.password, 10);
+        }
+
+        Object.assign(company, updateCompanyDto);
+        return await this.companyRepository.save(company);
     }
 
     remove(id: number): Promise<void> {

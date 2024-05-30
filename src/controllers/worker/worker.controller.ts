@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { WorkerService } from '../../services/worker.service';
-import { WorkerDTO } from '../../entities/dto/worker.dto';
+import { CreateWorkerDTO } from '../../entities/dto/worker.dto';
+import { UpdateWorkerDTO } from 'src/entities/dto/update-worker.dto';
 
 @Controller('workers')
 export class WorkerController {
@@ -17,12 +18,12 @@ export class WorkerController {
   }
 
   @Post()
-  create(@Body() createWorkerDto: WorkerDTO) {
+  create(@Body() createWorkerDto: CreateWorkerDTO) {
     return this.workerService.create(createWorkerDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateWorkerDto: WorkerDTO) {
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateWorkerDto: UpdateWorkerDTO) {
     return this.workerService.update(id, updateWorkerDto);
   }
 

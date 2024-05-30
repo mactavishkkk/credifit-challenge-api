@@ -22,6 +22,9 @@ export class Worker {
   @Column('decimal', { precision: 10, scale: 2 })
   salary: number;
 
+  @Column()
+  score: number;
+
   @ManyToOne(() => Company, company => company.workers)
   @JoinColumn({ name: 'company_id' })
   company: Company;

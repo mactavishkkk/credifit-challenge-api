@@ -1,6 +1,7 @@
 import { Company } from "src/entities/company.entity";
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
+import * as bcrypt from 'bcrypt';
 
 export class CompanySeeder implements Seeder {
     async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
@@ -11,13 +12,13 @@ export class CompanySeeder implements Seeder {
                 cnpj: '12345678000190',
                 companyName: 'Empresa 1',
                 email: 'empresa1@example.com',
-                password: 'senha123',
+                password: await bcrypt.hash('password', 10),
             },
             {
                 cnpj: '98765432000198',
                 companyName: 'Empresa 2',
                 email: 'empresa2@example.com',
-                password: 'senha456',
+                password: await bcrypt.hash('password', 10),
             },
         ];
 

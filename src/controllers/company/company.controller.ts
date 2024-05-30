@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { CompanyService } from '../../services/company.service';
-import { CompanyDTO } from 'src/entities/dto/company.dto';
+import { CreateCompanyDTO } from 'src/entities/dto/company.dto';
+import { UpdateCompanyDTO } from 'src/entities/dto/update-company.dto';
 
 @Controller('companies')
 export class CompanyController {
@@ -17,12 +18,12 @@ export class CompanyController {
   }
 
   @Post()
-  create(@Body() createCompanyDto: CompanyDTO) {
+  create(@Body() createCompanyDto: CreateCompanyDTO) {
     return this.companyService.create(createCompanyDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updateCompanyDto: CompanyDTO) {
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateCompanyDto: UpdateCompanyDTO) {
     return this.companyService.update(id, updateCompanyDto);
   }
 
