@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Not, Repository } from 'typeorm';
 import { Worker } from '../entities/worker.entity';
 import { CreateWorkerDTO } from 'src/entities/dto/worker.dto';
 import { UpdateWorkerDTO } from 'src/entities/dto/update-worker.dto';
+
 import * as bcrypt from 'bcrypt';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class WorkerService {
@@ -14,11 +16,30 @@ export class WorkerService {
     ) { }
 
     findAll(): Promise<Worker[]> {
-        return this.workerRepository.find({relations: ['company']});
+        return this.workerRepository.find({ relations: ['company'] });
     }
 
     findOne(id: number): Promise<Worker> {
         return this.workerRepository.findOne({ where: { id }, relations: ['company'] });
+    }
+
+    async findByCpfOrName(query: Query) {
+        const searchTerm = query.searchTerm + '';
+
+        const workers = await this.workerRepository.find({
+            where: [
+                { cpf: Like(`%${searchTerm}%`) },
+                { name: Like(`%${searchTerm}%`) },
+                { company: null }
+            ],
+            relations: ['company']
+        });
+
+        if (workers.length === 0) {
+            throw new NotFoundException(`Worker with cpf/name containing "${searchTerm}" not found`);
+        }
+
+        return workers;
     }
 
     async create(createWorkerDto: CreateWorkerDTO): Promise<Worker> {
