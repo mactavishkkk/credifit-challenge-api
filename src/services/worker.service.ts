@@ -14,11 +14,11 @@ export class WorkerService {
     ) { }
 
     findAll(): Promise<Worker[]> {
-        return this.workerRepository.find();
+        return this.workerRepository.find({relations: ['company']});
     }
 
     findOne(id: number): Promise<Worker> {
-        return this.workerRepository.findOne({ where: { id } });
+        return this.workerRepository.findOne({ where: { id }, relations: ['company'] });
     }
 
     async create(createWorkerDto: CreateWorkerDTO): Promise<Worker> {

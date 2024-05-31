@@ -34,6 +34,7 @@ export class PayrollLoanController {
 
     @Delete(':id')
     async remove(@Param('id') id: number) {
-        return this.payrollLoanService.remove(id);
+        this.payrollLoanService.remove(id);
+        return { message: `The payroll loan ${id} was successfully deleted.` }
     }
 }

@@ -12,21 +12,21 @@ export class PayrollLoanService {
         private payrollLoanRepository: Repository<PayrollLoan>,
     ) { }
 
-    async create(createPayrollLoanDto: CreatePayrollLoanDTO): Promise<PayrollLoan> {
-        const payrollLoan = this.payrollLoanRepository.create(createPayrollLoanDto);
-        return this.payrollLoanRepository.save(payrollLoan);
-    }
-
     async findAll(): Promise<PayrollLoan[]> {
-        return this.payrollLoanRepository.find();
+        return this.payrollLoanRepository.find({ relations: ['company', 'worker', 'status'] });
     }
 
     async findOne(id: number): Promise<PayrollLoan> {
-        const payrollLoan = await this.payrollLoanRepository.findOne({ where: { id } });
+        const payrollLoan = await this.payrollLoanRepository.findOne({ where: { id }, relations: ['company', 'worker', 'status'] });
         if (!payrollLoan) {
             throw new NotFoundException(`PayrollLoan with id ${id} not found`);
         }
         return payrollLoan;
+    }
+
+    async create(createPayrollLoanDto: CreatePayrollLoanDTO): Promise<PayrollLoan> {
+        const payrollLoan = this.payrollLoanRepository.create(createPayrollLoanDto);
+        return this.payrollLoanRepository.save(payrollLoan);
     }
 
     async update(id: number, updatePayrollLoanDto: UpdatePayrollLoanDTO): Promise<PayrollLoan> {
