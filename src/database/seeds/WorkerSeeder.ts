@@ -36,6 +36,22 @@ export class WorkerSeeder implements Seeder {
                 salary: 3500.00,
                 score: 152
             },
+            {
+                name: 'Evandro Costa',
+                cpf: '77654321000',
+                email: 'costa@example.com',
+                password: await bcrypt.hash('password', 10),
+                salary: 3500.00,
+                score: 87
+            },
+            {
+                name: 'Alexandre Maia',
+                cpf: '66654321000',
+                email: 'maia@example.com',
+                password: await bcrypt.hash('password', 10),
+                salary: 30500.00,
+                score: 756
+            },
         ];
 
         const newWorkers = workerRepository.create(workers);
