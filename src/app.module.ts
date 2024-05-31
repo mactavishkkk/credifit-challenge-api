@@ -2,24 +2,25 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { dataSourceOptions } from './database/data-source';
+import { CompanyModule } from './controllers/company/company.module';
+import { WorkerModule } from './controllers/worker/worker.module';
+import { APP_FILTER } from '@nestjs/core';
+import { UniqueConstraintExceptionFilter } from './services/exceptions/unique-constraint-exception.filter';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
+    CompanyModule,
+    WorkerModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: UniqueConstraintExceptionFilter,
+    }
+  ],
 })
 export class AppModule {}
