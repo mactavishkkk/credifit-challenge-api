@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query } from '@nestjs/common';
 import { WorkerService } from '../../services/worker.service';
 import { CreateWorkerDTO } from '../../entities/dto/worker.dto';
 import { UpdateWorkerDTO } from 'src/entities/dto/update-worker.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+
+import { Query as ExpressQuery } from 'express-serve-static-core';
 
 @ApiTags('workers')
 @Controller('workers')
@@ -17,6 +19,12 @@ export class WorkerController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.workerService.findOne(id);
+  }
+
+  @Post('search')
+  @ApiQuery({ name: 'searchTerm', required: true, type: String, description: 'CPF or name of the worker' })
+  findByCpfOrName(@Query() query: ExpressQuery) {
+    return this.workerService.findByCpfOrName(query);
   }
 
   @Post()
