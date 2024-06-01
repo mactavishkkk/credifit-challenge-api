@@ -41,11 +41,27 @@ docker compose up -d
 5. Pronto, agora você já poderá acessar a rota de boas vindas em seu navegador:
 
 ```bash
-https://localhost:3000/
+https://localhost:3001/
 ```
 
 ---
 
+## OBS:
+
+Por algum motivo, que confesso ainda não saber o porquê, alguns sistemas operacionais como distribuições linux não aceitam a palavra "localhost" para se referir ao IP local da máquina.
+
+então caso depois de executar a etapa **4** o aplicativo não subir, você precisará pegar o seu IP relativo que é diferente do **localhost**(127.0.0.1), é simples:
+
+1. Em seu terminal acesse-o com:
+
+```bash
+hostname -I
+```
+
+ele geralmente é o único ou o primeiro de uma lista, ele se parecerá com isto: `192.168.1.7 172.20.0.1 172.19.0`, nosso IP é o `192.168.1.7`.
+
+agora basta acessar o arquivo `credifit-challenge-api.git/docker-compose.yaml` e na string de conexão substituir o parâmetro `- DB_HOST=localhost` por `Host=192.168.1.7` ou vice-versa. Pronto, volte ao passo **3** e continue novamente.
+
 ## Documentação da API
 
-A documentação da API pode ser encontrada em `http://localhost:3000/swagger/api`, onde você pode encontrar informações sobre os endpoints disponíveis, parâmetros de solicitação, respostas e exemplos de uso.
+A documentação da API pode ser encontrada em `http://localhost:3001/swagger/api`, onde você pode encontrar informações sobre os endpoints disponíveis, parâmetros de solicitação, respostas e exemplos de uso.
