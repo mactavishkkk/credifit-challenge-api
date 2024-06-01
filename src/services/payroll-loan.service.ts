@@ -33,19 +33,8 @@ export class PayrollLoanService {
             relations: ['company']
         });
 
-        if (!worker || worker.company == null) {
-            throw new NotFoundException(
-                'Este trabalhador não possui uma empresa associada',
-                'Worker does not have an associated company'
-            );
-        }
-
-        if (createPayrollLoanDto.totalFinanced > (worker.salary * 0.35)) {
-            throw new NotFoundException(
-                'Este trabalhador não pode financiar uma quantia maior que 35% do seu salário',
-                'This worker cannot finance an amount greater than 35% of his salary'
-            );
-        }
+        this.checkLoanConditions(worker, createPayrollLoanDto);
+        createPayrollLoanDto = this.getStatusScore(worker, createPayrollLoanDto);
 
         const payrollLoan = this.payrollLoanRepository.create(createPayrollLoanDto);
         return this.payrollLoanRepository.save(payrollLoan);
@@ -60,5 +49,65 @@ export class PayrollLoanService {
     async remove(id: number): Promise<void> {
         const payrollLoan = await this.findOne(id);
         await this.payrollLoanRepository.remove(payrollLoan);
+    }
+
+    checkLoanConditions(worker: any, createPayrollLoanDto: any) {
+        if (!worker || worker.company == null) {
+            throw new NotFoundException(
+                'Este trabalhador não possui uma empresa associada',
+                'Worker does not have an associated company'
+            );
+        }
+
+        if (createPayrollLoanDto.totalFinanced > (worker.salary * 0.35)) {
+            throw new NotFoundException(
+                'Este trabalhador não pode financiar uma quantia maior que 35% de seu salário',
+                'This worker cannot finance an amount greater than 35% of his salary'
+            );
+        }
+    }
+
+    getStatusScore(worker: any, createPayrollLoanDto: any) {
+        const disapprovedStatus = 3;
+        const disapprovedStatusDetails = 'Reprovado por falta de score';
+
+        const conditions = this.getConditions();
+
+        for (const condition of conditions) {
+            if (
+                worker.salary > condition.minSalary &&
+                worker.salary <= condition.maxSalary &&
+                worker.score < condition.maxScore
+            ) {
+                createPayrollLoanDto.status = disapprovedStatus;
+                createPayrollLoanDto.statusDetails = disapprovedStatusDetails;
+                return createPayrollLoanDto;
+            }
+        }
+
+        createPayrollLoanDto.status = 1;
+        createPayrollLoanDto.statusDetails = '';
+        return createPayrollLoanDto;
+    }
+
+    getConditions() {
+        return [
+            {
+                minSalary: 0, maxSalary: 2000,
+                minScore: 0, maxScore: 400
+            },
+            {
+                minSalary: 2000, maxSalary: 4000,
+                minScore: 0, maxScore: 500
+            },
+            {
+                minSalary: 4000, maxSalary: 8000,
+                minScore: 0, maxScore: 600
+            },
+            {
+                minSalary: 8000, maxSalary: 12000,
+                minScore: 0, maxScore: 700
+            },
+        ];
     }
 }
