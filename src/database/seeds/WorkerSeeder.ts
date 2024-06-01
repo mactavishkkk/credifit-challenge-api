@@ -15,8 +15,8 @@ export class WorkerSeeder implements Seeder {
                 cpf: '12345678900',
                 email: 'joao@example.com',
                 password: await bcrypt.hash('password', 10),
-                salary: 3000.00,
-                score: 300,
+                salary: 2000.00,
+                score: 412,
                 company: await companyRepository.findOne({ where: { id: 1 } })
             },
             {
@@ -25,7 +25,7 @@ export class WorkerSeeder implements Seeder {
                 email: 'maria@example.com',
                 password: await bcrypt.hash('password', 10),
                 salary: 4000.00,
-                score: 352,
+                score: 576,
                 company: await companyRepository.findOne({ where: { id: 2 } })
             },
             {
@@ -33,8 +33,8 @@ export class WorkerSeeder implements Seeder {
                 cpf: '87654321000',
                 email: 'patricia@example.com',
                 password: await bcrypt.hash('password', 10),
-                salary: 3500.00,
-                score: 152
+                salary: 8000.00,
+                score: 690
             },
             {
                 name: 'Evandro Costa',
@@ -42,14 +42,15 @@ export class WorkerSeeder implements Seeder {
                 email: 'costa@example.com',
                 password: await bcrypt.hash('password', 10),
                 salary: 3500.00,
-                score: 87
+                score: 487,
+                company: await companyRepository.findOne({ where: { id: 3 } })
             },
             {
                 name: 'Alexandre Maia',
                 cpf: '66654321000',
                 email: 'maia@example.com',
                 password: await bcrypt.hash('password', 10),
-                salary: 30500.00,
+                salary: 10500.00,
                 score: 756
             },
         ];

@@ -8,9 +8,6 @@ export class CreatePayrollLoanDTO {
   workerId: number;
 
   @ApiProperty()
-  nextDue: Date;
-
-  @ApiProperty()
   numberInstallments: number;
 
   @ApiProperty()

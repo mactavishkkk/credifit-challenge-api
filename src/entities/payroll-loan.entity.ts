@@ -1,5 +1,5 @@
 // src/entites/worker.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToOne, CreateDateColumn } from 'typeorm';
 import { Company } from './company.entity';
 import { Worker } from './worker.entity';
 import { LoanStatus } from './loan-status.entity';
@@ -35,4 +35,7 @@ export class PayrollLoan {
 
   @Column('decimal', { precision: 10, scale: 2, name: 'total_financed' })
   totalFinanced: number;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 }

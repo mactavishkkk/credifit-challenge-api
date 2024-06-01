@@ -35,6 +35,8 @@ export class PayrollLoanService {
 
         this.checkLoanConditions(worker, createPayrollLoanDto);
         createPayrollLoanDto = this.getStatusScore(worker, createPayrollLoanDto);
+        createPayrollLoanDto.createdAt = new Date();
+        createPayrollLoanDto.nextDue = new Date(createPayrollLoanDto.createdAt.getTime() + 30 * 24 * 60 * 60 * 1000);
 
         const payrollLoan = this.payrollLoanRepository.create(createPayrollLoanDto);
         return this.payrollLoanRepository.save(payrollLoan);
