@@ -26,19 +26,21 @@ git clone https://github.com/mactavishkkk/credifit-challenge-api.git
 cd credifit-challenge-api
 ```
 
-3. Construa as imagens para os ambientes com docker, no terminal use:
+3. Você precisará do arquivo `.env` em seu diretório raiz, basta renomear o `.env.example` para o mesmo ou criar um novo:
+
+4. Construa as imagens para os ambientes com docker, no terminal use:
 
 ```bash
 docker compose build
 ```
 
-4. Agora basta subir elas com:
+5. Agora basta subir elas com:
 
 ```bash
 docker compose up -d
 ```
 
-5. Pronto, agora você já poderá acessar a rota de boas vindas em seu navegador:
+6. Pronto, agora você já poderá acessar a rota de boas vindas em seu navegador:
 
 ```bash
 https://localhost:3001/
@@ -60,7 +62,7 @@ hostname -I
 
 ele geralmente é o único ou o primeiro de uma lista, ele se parecerá com isto: `192.168.1.7 172.20.0.1 172.19.0`, nosso IP é o `192.168.1.7`.
 
-agora basta acessar o arquivo `credifit-challenge-api.git/docker-compose.yaml` e na string de conexão substituir o parâmetro `- DB_HOST=localhost` por `Host=192.168.1.7` ou vice-versa. Pronto, volte ao passo **3** e continue novamente.
+agora basta acessar o arquivo `credifit-challenge-api.git/docker-compose.yaml` e na string de conexão substituir o parâmetro `- DB_HOST=localhost` por `Host=192.168.1.7` ou vice-versa, você também deverá fazer esta substituição no arquivo `.env`. Pronto, volte ao passo **3** e continue novamente.
 
 ## Documentação da API
 
